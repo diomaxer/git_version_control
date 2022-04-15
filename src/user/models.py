@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -23,4 +23,17 @@ class UserStat(BaseModel):
     stargazers: int
     forks: int
     watchers: int
+
+
+class UserStatMin(BaseModel):
+    repo_id: int
+    date: datetime.date
+    stargazers: int
+    forks: int
+    watchers: int
+
+
+class UserRepos(BaseModel):
+    user: UserResponseV1
+    stats: Optional[List[UserStatMin]]
 
