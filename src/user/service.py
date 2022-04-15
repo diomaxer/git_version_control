@@ -6,7 +6,7 @@ from sqlalchemy.future import Engine
 from starlette import status
 
 from src.database import tables
-from src.user.models import UserResponseV1, UserAddRequestV1
+from src.user.models import UserResponseV1, UserAddRequestV1, UserRepos, UserStatMin
 
 
 class UserService:
@@ -19,6 +19,7 @@ class UserService:
             users_data = connection.execute(query)
         users = []
         for user_data in users_data:
+            print(type(user_data))
             user = UserResponseV1(
                 id=user_data['id'],
                 login=user_data['login'],
@@ -56,3 +57,25 @@ class UserService:
         with self._engine.connect() as connection:
             connection.execute(query)
             connection.commit()
+
+    def get_user_stat_by_id(self, id: int) -> Optional[UserRepos]:
+        user = self.get_user_by_id(id)
+        print(type(user))
+        print(user)
+        query = select(tables.stats).where(tables.stats.c.user_id == id)
+        with self._engine.connect() as connection:
+            user_data = connection.execute(query)
+        if not user_data:
+            stats = None
+        else:
+            stats = []
+            for row in user_data:
+                stat = UserStatMin(
+                    repo_id=row['repo_id'],
+                    date=row['date'],
+                    stargazers=row['stargazers'],
+                    forks=row['forks'],
+                    watchers=row['watchers'],
+                )
+                stats.append(stat)
+        return UserRepos(user=user, stats=stats)

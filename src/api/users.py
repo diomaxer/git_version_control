@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, status, Depends, Path
 
 from src.api.protocols import UserServiceProtocol
-from src.user.models import UserResponseV1, UserAddRequestV1
+from src.user.models import UserResponseV1, UserAddRequestV1, UserRepos
 
 router = APIRouter(
     tags=['Users']
@@ -66,9 +66,9 @@ def delete_user(
 
 @router.get(
     path='/v1/users/{id}/stat',
-    response_model=Optional[UserResponseV1],
-    summary='Информация о пользователе',
-    description='Возвращает информацию о пользователе.',
+    response_model=Optional[UserRepos],
+    summary='Информация о репозиториях пользователя',
+    description='Возвращает информацию о репозиториях пользователе за определенный период.',
     responses={
             404: {
                 "content": {"application/json": {"example": {"detail": "Пользователь не найден"}}},
@@ -78,4 +78,4 @@ def get_user(
         id: int = Path(..., ge=1),
         user_service: UserServiceProtocol = Depends()
 ):
-    return user_service.get_user_by_id(id)
+    return user_service.get_user_stat_by_id(id)

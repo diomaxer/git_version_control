@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from src.user.models import UserResponseV1, UserAddRequestV1
+from src.user.models import UserResponseV1, UserAddRequestV1, UserRepos
 
 
 class UserServiceProtocol:
@@ -8,6 +8,9 @@ class UserServiceProtocol:
         raise NotImplementedError
 
     def get_user_by_id(self, id: int) -> Optional[UserResponseV1]:
+        raise NotImplementedError
+
+    def get_user_stat_by_id(self, id: int) -> Optional[UserRepos]:
         raise NotImplementedError
 
     def add_user(self, user: UserAddRequestV1) -> None:
