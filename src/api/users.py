@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, status, Depends, Path
 
@@ -24,9 +24,13 @@ def get_all_users(
 
 @router.get(
     path='/v1/users/{id}',
-    response_model=UserResponseV1,
+    response_model=Optional[UserResponseV1],
     summary='Информация о пользователе',
-    description='Возвращает информацию о пользователе.'
+    description='Возвращает информацию о пользователе.',
+    responses={
+            404: {
+                "content": {"application/json": {"example": {"detail": "Пользователь не найден"}}},
+            }}
 )
 def get_user(
         id: int = Path(..., ge=1),
@@ -51,10 +55,27 @@ def add_user(
 @router.delete(
     path='/v1/users/{id}',
     summary='Удалить пользователя',
-    description='Удаляет пользователя.'
+    description='Удаляет пользователя.',
 )
 def delete_user(
         id: int = Path(..., ge=1),
         user_service: UserServiceProtocol = Depends()
 ):
     user_service.delete_user_by_id(id)
+
+
+@router.get(
+    path='/v1/users/{id}/stat',
+    response_model=Optional[UserResponseV1],
+    summary='Информация о пользователе',
+    description='Возвращает информацию о пользователе.',
+    responses={
+            404: {
+                "content": {"application/json": {"example": {"detail": "Пользователь не найден"}}},
+            }}
+)
+def get_user(
+        id: int = Path(..., ge=1),
+        user_service: UserServiceProtocol = Depends()
+):
+    return user_service.get_user_by_id(id)
