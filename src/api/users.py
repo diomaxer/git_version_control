@@ -35,7 +35,7 @@ def get_user(
     return user_service.get_user_by_id(id)
 
 
-@router.put(
+@router.post(
     path='/v1/users',
     status_code=status.HTTP_201_CREATED,
     summary='Добавить пользователя',
