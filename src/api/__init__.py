@@ -16,7 +16,13 @@ def get_application() -> FastAPI:
 
     application.include_router(users.router)
 
-    db_settings = DatabaseSettings()
+    db_settings = DatabaseSettings(
+        host='localhost',
+        port='5432',
+        username='postgres',
+        password='12345',
+        database='version_control'
+    )
     engine = sa.create_engine(
         create_database_url(db_settings),
         future=True
