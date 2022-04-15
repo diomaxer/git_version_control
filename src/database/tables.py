@@ -14,7 +14,7 @@ stats = sa.Table(
     'stats',
     metadata,
     sa.Column('user_id', sa.BigInteger, sa.ForeignKey('user.id'), nullable=False),
-    sa.Column('repo_id', sa.BigInteger, primary_key=True),
+    sa.Column('repo_id', sa.BigInteger, primary_key=True, unique=True),
     sa.Column('date', sa.Date, nullable=False, primary_key=True),
     sa.Column('stargazers', sa.Integer, nullable=False),
     sa.Column('forks', sa.Integer, nullable=False),
