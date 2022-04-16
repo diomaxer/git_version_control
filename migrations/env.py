@@ -7,17 +7,14 @@ from sqlalchemy import pool
 from src.database import DatabaseSettings, create_database_url
 from src.database.tables import metadata
 
+from src.database.settings import MyDataBase
+
 config = context.config
 fileConfig(config.config_file_name)
 
 target_metadata = metadata
-db_settings = DatabaseSettings(
-        host='localhost',
-        port='5432',
-        username='postgres',
-        password='12345',
-        database='version_control'
-)
+
+db_settings = MyDataBase
 
 config.set_main_option('sqlalchemy.url', create_database_url(db_settings))
 

@@ -3,7 +3,8 @@ from fastapi import FastAPI
 
 import src.api.protocols
 from src.api import users, protocols
-from src.database import DatabaseSettings, create_database_url
+from src.database import create_database_url
+from src.database.settings import MyDataBase
 from src.user.service import UserService
 
 
@@ -16,13 +17,7 @@ def get_application() -> FastAPI:
 
     application.include_router(users.router)
 
-    db_settings = DatabaseSettings(
-        host='localhost',
-        port='5432',
-        username='postgres',
-        password='12345',
-        database='version_control'
-    )
+    db_settings = MyDataBase
     engine = sa.create_engine(
         create_database_url(db_settings),
         future=True

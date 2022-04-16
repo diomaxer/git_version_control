@@ -1,5 +1,8 @@
+import os
+from dotenv import load_dotenv
 from pydantic import BaseSettings, Field
 
+load_dotenv()
 
 class DatabaseSettings(BaseSettings):
     host: str = Field(..., env='DB_HOST')
@@ -7,3 +10,12 @@ class DatabaseSettings(BaseSettings):
     username: str = Field(..., env='DB_USERNAME')
     password: str = Field(..., env='DB_PASSWORD')
     database: str = Field(..., env='DB_DATABASE')
+
+
+MyDataBase = DatabaseSettings(
+        host=os.getenv('DB_HOST'),
+        port=os.getenv('DB_PORT'),
+        username=os.getenv('DB_USERNAME'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_DATABASE')
+)
