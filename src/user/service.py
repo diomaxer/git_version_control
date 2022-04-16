@@ -1,5 +1,5 @@
 from typing import List, Optional
-
+import datetime
 from fastapi import HTTPException
 from sqlalchemy import select, insert, delete
 from sqlalchemy.future import Engine
@@ -58,11 +58,13 @@ class UserService:
             connection.execute(query)
             connection.commit()
 
-    def get_user_stat_by_id(self, id: int) -> Optional[UserRepos]:
+    def get_user_stat_by_id(self, id: int, date_from: Optional[datetime.date], date_to: Optional[datetime.date]) -> Optional[UserRepos]:
         user = self.get_user_by_id(id)
-        print(type(user))
-        print(user)
         query = select(tables.stats).where(tables.stats.c.user_id == id)
+        if date_from:
+            query = query.where(tables.stats.c.date >= date_from)
+        if date_to:
+            query = query.where(tables.stats.c.date <= date_to)
         with self._engine.connect() as connection:
             user_data = connection.execute(query)
         if not user_data:

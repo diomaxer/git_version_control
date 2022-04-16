@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, status, Depends, Path
@@ -74,8 +75,10 @@ def delete_user(
                 "content": {"application/json": {"example": {"detail": "Пользователь не найден"}}},
             }}
 )
-def get_user(
+def get_user_stats(
         id: int = Path(..., ge=1),
+        date_from: Optional[datetime.date] = None,
+        date_to: Optional[datetime.date] = None,
         user_service: UserServiceProtocol = Depends()
 ):
-    return user_service.get_user_stat_by_id(id)
+    return user_service.get_user_stat_by_id(id, date_from, date_to)
