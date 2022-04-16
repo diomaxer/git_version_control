@@ -27,8 +27,8 @@ def upgrade():
     op.create_table(
         'stats',
         sa.Column('user_id', sa.BigInteger(), nullable=False),
-        sa.Column('repo_id', sa.BigInteger(), nullable=False, unique=True),
-        sa.Column('date', sa.Date(), nullable=False),
+        sa.Column('repo_id', sa.BigInteger(), nullable=False, unique=True, autoincrement=True, primary_key=True),
+        sa.Column('date', sa.Date(), nullable=False, primary_key=True),
         sa.Column('stargazers', sa.Integer(), nullable=False),
         sa.Column('forks', sa.Integer(), nullable=False),
         sa.Column('watchers', sa.Integer(), nullable=False),
