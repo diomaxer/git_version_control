@@ -1,15 +1,18 @@
+import sys
 import datetime
 import time
 
 import schedule
 
-from src.database.db import engine
-from src.database import tables
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from user.models import UserResponseV1, UserStat
 import httpx
 
+sys.path = ['', '..'] + sys.path[1:]
+
+from src.database.db import engine
+from src.database import tables
 
 conn = engine.connect()
 
@@ -80,7 +83,8 @@ def do_the_job():
     """
     users = get_users()
     all_users_data = get_users_data_from_api(users)
-    insert_data(all_users_data)
+    if all_users_data:
+        insert_data(all_users_data)
 
 
 if __name__ == '__main__':
